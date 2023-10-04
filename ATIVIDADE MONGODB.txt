@@ -1,0 +1,71 @@
+UNIFACISA
+SISTEMAS DE INFORMAÇÃO - NOITE
+GRUPO: JÉSSIKA MÍIRLLA
+MARCUS TOLEDO
+SAMYRA RAMOS
+GABRIEL NOBREGA
+
+ATIVIDADE SOBRE MONGODB
+
+1- Crie uma base de dados chamada Empresa;
+
+use Empresa
+
+2- Adicione uma coleção chamada Pessoa;
+
+db.createColletion("Pessoa")
+
+3- Atribua a cada Documento em Pessoa os seguintes
+atributos: nome, idade, cargo, cidade.
+3.1 Faça a atribuição para 10 pessoas;
+
+db.Pessoa.insertMany([{nome:"Beatriz",idade:24,cargo:"Recepcionista,cidade:"Campina Grande"},{nome:"João",idade:35,cargo:"Segurança",cidade:"Campina Grande"},{nome:"Caio",idade:36,cargo:"Manutenção",cidade:"Campina Grande"},{nome:"Elizabete",idade:39,cargo:"Limpeza",cidade:"Campina Grande"},{nome:"Rosa",idade:40,cargo:"Cozinheira",cidade:"Campina Grande"},{nome:"Bruna",idade:24,cargo:"Assistente",cidade:"Campina Grande"},{nome:"Breno",idade:23,cargo:"Assistente administrativo",cidade:"Campina Grande"},{nome:"Maria",idade:55,cargo:"Médica",cidade:"Campina Grande"},{nome:"Mario",idade:42,cargo:"Secretário",cidade:"Campina Grande"},{nome:"Junior",idade:23,cargo:"TI",cidade:"Campina Grande"}])
+
+4- Atualize os dados de duas pessoas, em que faça a
+complementação do nome e endereço.
+
+db.Pessoa.updateOne ({nome:"Beatriz",endereco:"Rua: Floriano peixoto"}, {$set:{nome:"Beatriz Mendes",endereco:"Rua: Floriano peixoto 22"}})
+db.Pessoa.updateOne ({nome:"João",endereco:"Rua: Coutinho"}, {$set:{nome:"João Paulo",endereco:"Rua: Coutinho 52"}})
+
+5- Filtre apenas as pessoas com idade maior que 25 anos,
+sem apareça o id.
+
+db.Pessoa.find({idade:{$gte:25}})
+
+6- Faça a agregação para calcular a média de idade das
+pessoas por cidade.
+
+db.Pessoa.aggregate([
+  {
+    $group: {
+      _id: "$cidade",
+      media_idade: { $avg: "$idade" }
+    }
+  }
+])
+
+7- Crie uma nova coleção dos setores de trabalho, em cada
+setor deverá constar: sigla, descrição e salário
+7.1 Faça a inclusão de 4 siglas distintas.
+
+db.createColletion("Novos")
+db.Novos.insertMany([{sigla:"RCP",descricao:"Recepcionista",salario:1200,00},{sigla:"SGR",descricao:"Segurança",salario:1220,00},{sigla:"MNT",descricao:"Manutenção",salario:1330,00},{sigla:"LPZ",descricao:"Limpeza",salario:1400,00},{sigla:"CZN",descricao:"Cozinheira",salario:1120,00},{sigla:"ASS",descricao:"Assistente",salario:1250,00},{sigla:"ADM",descricao:"Assistente admnistrativo",salario:1300,00},{sigla:"MD",descricao:"Médica",salario:5000,00},{sigla:"SCT",descricao:"Secretário",salario:1520,00},{sigla:"TICS",descricao:"TI",salario:3500,00}])
+
+8- Qual o setor de trabalho com maior salário?
+
+db.Novos.find().sort({ salario: -1 }).limit(1)
+
+9- Qual o setor de trabalho com menor salário?
+
+db.Novos.find().sort({ salario: 1 }).limit(1)
+
+10- Qual a média dos salários dos setores de trabalho?
+
+db.Novos.aggregate([
+  {
+    $group: {
+      _id: null,
+      media_salario: { $avg: "$salario" }
+    }
+  }
+])
